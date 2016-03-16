@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>刮刮卡</title>
+  <script src="flexible.debug.js"></script>
+  <style>
+  *{
+    margin: 0;
+    padding: 0;
+  }
+  .wrapper{
+    margin: 0 auto;
+    width: 10rem;
+    background: #eee;
+    overflow: hidden;
+  }
+  #lotteryContainer{
+    position: relative;
+    margin: 1.5625rem auto;
+    width: 7rem;
+    height: 4.015625rem;
+    background: #f00;
+    overflow: hidden;
+  }
+  #lotteryContainer canvas{
+    width: 100%;
+    height: 100%;
+  }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <button id="reset">重置</button>已刮开<span id="drawPercent">0%</span>
+    <div id="lotteryContainer"></div>
+  </div>
+<script src="Lottery.js"></script>
+<script>
+  /*
+    使用说明
+    原项目地址：https://github.com/artwl/Lottery
+    本 Lottery.js 有修改，为了兼容屏幕出现缩放后的 bug
+
+    构造方法参数解释
+    id:刮奖容器，必须
+    cover:涂层内容，可以为图片地址或颜色值，可空，默认为 #ccc
+    coverType:涂层类型，值为 image 或 color，可空，默认为 color
+    width:刮奖区域宽度，默认为300px，可空
+    height:刮奖区域高度，默认为100px，可空
+    zoomScale:绘制canvas的缩放比例（最终缩放后的大小 / 代码大小），可空，默认为 1
+    drawPercentCallback:刮开的区域百分比，可空
+  */
+  window.onload = function(){
+    var  lc = document.getElementById('lotteryContainer');
+    var lottery = new Lottery('lotteryContainer', './fg.jpg', 'image', 448, 257, lc.offsetWidth / 448, drawPercent);
+    lottery.init('谢谢惠顾', 'text');
+
+    var drawPercentNode = document.getElementById('drawPercent');
+    function drawPercent(percent){
+      drawPercentNode.innerHTML = percent + '%';
+      if(percent > 70){
+        document.getElementById('lotteryContainer').innerHTML='<img src="http://www.baidu.com/img/bdlogo.gif" />';
+      }
+    }
+    /*var b = document.getElementById('lotteryContainer');
+    var a = document.getElementById('lotteryContainer').getElementsByTagName('canvas')[1];
+    console.log('刮刮卡的宽高：'+a.getBoundingClientRect().width+', '+a.getBoundingClientRect().height);
+    console.log(a.getBoundingClientRect().left);
+    console.log(a.getBoundingClientRect().top);*/
+  }
+</script>
+</body>
+</html>
